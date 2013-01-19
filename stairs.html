@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stairs</title>
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+    <style>
+    body {
+        font-family: verdana,sans-serif;
+        font-size: 12px;
+    }
+    table {
+        border: 2px;
+        padding: 2px;
+        margin: 2px;
+    }
+    table td {
+        height: 30px;
+    }
+    table td.label {
+        background-color: #b0e0e6;
+    }
+    </style>
+    <script language="javascript1.5">
+    var STAIR_LIMIT = 18;
+    var STOPPER_LENGTH = 120;
+    var DIGIT_RE = /\d+(:?[,.]\d+)?/;
+
+    function get_height(length, angle) {
+        return (length * Math.tan(angle * Math.PI / 180)).toFixed(2) * 1;
+    }
+
+    function get_value(id) {
+        return document.getElementById(id).value.replace(',', '.');
+    }
+
+    function calculate() {
+        var height = get_value("stair_height");
+        var stair_length = get_value("step_length");
+        var angle = get_value("angle");
+
+        if (!DIGIT_RE.test(height) || !DIGIT_RE.test(stair_length) || !DIGIT_RE.test(angle)) {
+            return;
+        }
+        var stair_height = get_height(stair_length, angle);
+
+        var stair_count = 0;
+        var stopper_count = 0;
+        var current_height = 0.0;
+        while (current_height < height) {
+            stair_count++;
+            current_height += stair_height;
+            if (stair_count % STAIR_LIMIT == 0) {
+                stopper_count++;
+                current_height += stair_height;
+            }
+        }
+        var end_length = stair_count * stair_length + stopper_count + STOPPER_LENGTH;
+
+        stair_height = (height / (stair_count + stopper_count));
+        var end_height = stair_height * (stair_count + stopper_count);
+        var end_angle = Math.atan(stair_height / stair_length) * 180 / Math.PI;
+
+        document.getElementById("step_height").value = stair_height;
+        document.getElementById("step_count").innerHTML = stair_count;
+        document.getElementById("stopper_count").innerHTML = stopper_count;
+        document.getElementById("end_height").innerHTML = end_height;
+        document.getElementById("end_length").innerHTML = end_length;
+        document.getElementById("end_angle").innerHTML = end_angle;
+    }
+    </script>
+</head>
+<body>
+<table>
+        <tr>
+            <td class="label"><label for="stair_height">Treppen Höhe</label></td>
+            <td><input id="stair_height" type="text" onchange="calculate()"/></td>
+        </tr>
+        <tr>
+            <td class="label"><label for="step_length">Stufen Länge</label></td>
+            <td><input id="step_length" type="text"  onchange="calculate()"/></td>
+        </tr>
+        <tr>
+            <td class="label"><label for="step_height">Stufen Höhe</label></td>
+            <td><input id="step_height" type="text" onchange="calculate()" /></td>
+        </tr>
+        <tr>
+            <td class="label"><label for="angle">Winkel</label></td>
+            <td><input id="angle" type="text" onchange="calculate()" /></td>
+        </tr>
+        <tr>
+            <td class="label">Stufen Anzahl</td>
+            <td id="step_count"></td>
+        </tr>
+        <tr>
+            <td class="label">Podest Anzahl</td>
+            <td id="stopper_count"></td>
+        </tr>
+        <tr>
+            <td class="label">End Höhe</td>
+            <td id="end_height"></td>
+        </tr>
+        <tr>
+            <td class="label">End Länge</td>
+            <td id="end_length"></td>
+        </tr>
+        <tr>
+            <td class="label">End Winkel</td>
+            <td id="end_angle"></td>
+        </tr>
+</table>
+<div id="result"></div>
+
+</body>
+</html>
