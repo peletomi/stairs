@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<!--
+Copyright (c) 2013, Tamas Eppel
+All rights reserved.
+-->
+<html lang="de">
+<head>
+    <title>Stairs</title>
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+    <link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="static/js/jquery-1.9.0.min.js"></script>
+    <script language="javascript1.5">
+    var DIGIT_RE = /\d+(:?[,.]\d+)?/;
+
+    function get_side_length(length, angle) {
+        return (length * Math.tan(angle * Math.PI / 180)).toFixed(2) * 1;
+    }
+
+    function get_value(id) {
+        return parseFloat(document.getElementById(id).value.replace(',', '.'));
+    }
+
+    function calculate() {
+        var step_limit = get_value("step_limit");
+        var stopper_length = get_value("stopper_length");
+        var stair_height = get_value("stair_height");
+        var step_length = get_value("step_length");
+        var step_height = get_value("step_height");
+        var angle = get_value("angle");
+
+        if (!(DIGIT_RE.test(stair_height) && (DIGIT_RE.test(step_length) || DIGIT_RE.test(step_height)) && DIGIT_RE.test(angle))) {
+            return;
+        }
+
+        if (DIGIT_RE.test(step_length)) {
+           step_height = get_side_length(step_length, angle);
+        } else {
+           step_length = get_side_length(step_height, 90 - angle);
+        }
+
+        var step_count = 0;
+        var stopper_count = 0;
+        var current_height = 0.0;
+        while (current_height < stair_height) {
+            step_count++;
+            current_height += step_height;
+            if (step_count % step_limit == 0) {
+                stopper_count++;
+                current_height += step_height;
+            }
+        }
+        var end_length = step_count * step_length + stopper_count + stopper_length;
+
+        step_height = (stair_height / (step_count + stopper_count));
+        var end_height = step_height * (step_count + stopper_count);
+        var end_angle = Math.atan(step_height / step_length) * 180 / Math.PI;
+
+        $('#step_height').val(step_height);
+        $('#step_length').val(step_length);
+        $('#step_count').val(step_count);
+        $('#stopper_count').val(stopper_count);
+        $('#end_height').val(end_height);
+        $('#end_length').val(end_length);
+        $('#end_angle').val(end_angle);
+    }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="row-fluid">
+        <div class="span4">
+            <div class="control-group">
+                <label for="stair_height">Treppen Höhe</label>
+                <div class="input-append">
+                    <input id="stair_height" type="number" />
+                    <span class="add-on">cm</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="angle">Winkel</label>
+                <div class="input-append">
+                    <input id="angle" type="number" />
+                    <span class="add-on">°</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="step_length">Stufen Länge</label>
+                <div class="input-append">
+                    <input id="step_length" type="number"/>
+                    <span class="add-on">cm</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="step_height">Stufen Höhe</label>
+                <div class="input-append">
+                    <input id="step_height" type="number"/>
+                    <span class="add-on">cm</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label for="step_count">Stufen Anzahl</label>
+                <div class="input-append">
+                    <input id="step_count" type="number" readonly/>
+                    <span class="add-on">cm</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="stopper_count">Podest Anzahl</label>
+                <div class="input-append">
+                    <input id="stopper_count" type="number" readonly/>
+                    <span class="add-on">nr.</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="end_height">End Höhe</label>
+                <div class="input-append">
+                    <input id="end_height" type="number" readonly/>
+                    <span class="add-on">cm</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="end_length">End Länge</label>
+                <div class="input-append">
+                    <input id="end_length" type="number" readonly/>
+                    <span class="add-on">cm</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="end_angle">End Winkel</label>
+                <div class="input-append">
+                    <input id="end_angle" type="number" readonly/>
+                    <span class="add-on">°</span>
+                </div>
+            </div>
+        </div>
+        <div class="span4">
+            <div class="control-group">
+                <label for="step_limit">Stufen Limit</label>
+                <div class="input-append">
+                    <input id="step_limit" type="number" value="18"/>
+                    <span class="add-on">nr.</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="stopper_length">Podest Länge</label>
+                <div class="input-append">
+                    <input id="stopper_length" type="number" value="120.0"/>
+                    <span class="add-on">cm</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button onclick="calculate()" class="btn">Berechnen</button>
+    <p>
+        <small>
+        Using:
+        <ul>
+            <li><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a></li>
+            <li><a href="http://jquery.com/">JQuery</a></li>
+        </ul>
+        </small>
+    </p>
+</div>
+</body>
+</html>
