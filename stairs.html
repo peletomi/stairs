@@ -3,27 +3,12 @@
 Copyright (c) 2013, Tamas Eppel
 All rights reserved.
 -->
-<html>
+<html lang="de">
 <head>
     <title>Stairs</title>
     <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
-    <style>
-    body {
-        font-family: verdana,sans-serif;
-        font-size: 12px;
-    }
-    table {
-        border: 2px;
-        padding: 2px;
-        margin: 2px;
-    }
-    table td {
-        height: 30px;
-    }
-    table td.label {
-        background-color: #b0e0e6;
-    }
-    </style>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="static/js/jquery-1.9.0.min.js"></script>
     <script language="javascript1.5">
     var DIGIT_RE = /\d+(:?[,.]\d+)?/;
 
@@ -70,83 +55,112 @@ All rights reserved.
         var end_height = step_height * (step_count + stopper_count);
         var end_angle = Math.atan(step_height / step_length) * 180 / Math.PI;
 
-        document.getElementById("step_height").value = step_height;
-        document.getElementById("step_length").value = step_length;
-        document.getElementById("step_count").innerHTML = step_count;
-        document.getElementById("stopper_count").innerHTML = stopper_count;
-        document.getElementById("end_height").innerHTML = end_height;
-        document.getElementById("end_length").innerHTML = end_length;
-        document.getElementById("end_angle").innerHTML = end_angle;
+        $('#step_height').val(step_height);
+        $('#step_length').val(step_length);
+        $('#step_count').val(step_count);
+        $('#stopper_count').val(stopper_count);
+        $('#end_height').val(end_height);
+        $('#end_length').val(end_length);
+        $('#end_angle').val(end_angle);
     }
     </script>
 </head>
 <body>
-<div>
-    <div style="float:left;">
-    <table>
-            <tr>
-                <td class="label"><label for="stair_height">Treppen Höhe</label></td>
-                <td><input id="stair_height" type="number" /></td>
-                <td>cm</td>
-            </tr>
-            <tr>
-                <td class="label"><label for="angle">Winkel</label></td>
-                <td><input id="angle" type="number" /></td>
-                <td>°</td>
-            </tr>
-            <tr>
-                <td class="label"><label for="step_length">Stufen Länge</label></td>
-                <td><input id="step_length" type="number" /></td>
-                <td>cm</td>
-            </tr>
-            <tr>
-                <td class="label"><label for="step_height">Stufen Höhe</label></td>
-                <td><input id="step_height" type="number"/></td>
-                <td>cm</td>
-            </tr>
-            <tr>
-                <td class="label">Stufen Anzahl</td>
-                <td id="step_count"></td>
-                <td>cm</td>
-            </tr>
-            <tr>
-                <td class="label">Podest Anzahl</td>
-                <td id="stopper_count"></td>
-                <td>cm</td>
-            </tr>
-            <tr>
-                <td class="label">End Höhe</td>
-                <td id="end_height"></td>
-                <td>cm</td>
-            </tr>
-            <tr>
-                <td class="label">End Länge</td>
-                <td id="end_length"></td>
-                <td>cm</td>
-            </tr>
-            <tr>
-                <td class="label">End Winkel</td>
-                <td id="end_angle"></td>
-                <td>°</td>
-            </tr>
-    </table>
-    </div>
-    <div>
-    <table>
-        <tr>
-            <td class="label"><label for="step_limit">Stufen Limit</label></td>
-            <td><input id="step_limit" type="number" value="18"/></td>
-            <td>nr.</td>
-        </tr>
-        <tr>
-            <td class="label"><label for="stopper_length">Podest Länge</label></td>
-            <td><input id="stopper_length" type="number" value="120.0"/></td>
-            <td>cm</td>
-        </tr>
-        </table>
-    </div>
-</div>
-<button onclick="calculate()">Berechnen</button>
+<div class="container">
+    <div class="row-fluid">
+        <div class="span4">
+            <div class="control-group">
+                <label for="stair_height">Treppen Höhe</label>
+                <div class="input-append">
+                    <input id="stair_height" type="number" />
+                    <span class="add-on">cm</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="angle">Winkel</label>
+                <div class="input-append">
+                    <input id="angle" type="number" />
+                    <span class="add-on">°</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="step_length">Stufen Länge</label>
+                <div class="input-append">
+                    <input id="step_length" type="number"/>
+                    <span class="add-on">cm</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="step_height">Stufen Höhe</label>
+                <div class="input-append">
+                    <input id="step_height" type="number"/>
+                    <span class="add-on">cm</span>
+                </div>
+            </div>
 
+            <div class="control-group">
+                <label for="step_count">Stufen Anzahl</label>
+                <div class="input-append">
+                    <input id="step_count" type="number" readonly/>
+                    <span class="add-on">cm</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="stopper_count">Podest Anzahl</label>
+                <div class="input-append">
+                    <input id="stopper_count" type="number" readonly/>
+                    <span class="add-on">nr.</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="end_height">End Höhe</label>
+                <div class="input-append">
+                    <input id="end_height" type="number" readonly/>
+                    <span class="add-on">cm</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="end_length">End Länge</label>
+                <div class="input-append">
+                    <input id="end_length" type="number" readonly/>
+                    <span class="add-on">cm</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="end_angle">End Winkel</label>
+                <div class="input-append">
+                    <input id="end_angle" type="number" readonly/>
+                    <span class="add-on">°</span>
+                </div>
+            </div>
+        </div>
+        <div class="span4">
+            <div class="control-group">
+                <label for="step_limit">Stufen Limit</label>
+                <div class="input-append">
+                    <input id="step_limit" type="number" value="18"/>
+                    <span class="add-on">nr.</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="stopper_length">Podest Länge</label>
+                <div class="input-append">
+                    <input id="stopper_length" type="number" value="120.0"/>
+                    <span class="add-on">cm</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button onclick="calculate()" class="btn">Berechnen</button>
+    <p>
+        <small>
+        Using:
+        <ul>
+            <li><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a></li>
+            <li><a href="http://jquery.com/">JQuery</a></li>
+        </ul>
+        </small>
+    </p>
+</div>
 </body>
 </html>
